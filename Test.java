@@ -18,12 +18,12 @@ public class Test extends JPanel {
     private List<GraphEdge> allEdges;
 
     private void makeVoronoi() {
-        double[] xVals = new double[500];
-        double[] yVals = new double[500];
+        double[] xVals = new double[1000];
+        double[] yVals = new double[1000];
         Random r = new Random();
-        for (int i = 0; i < 500; i++) {
-            xVals[i] = r.nextInt(1280);
-            yVals[i] = r.nextInt(1024);
+        for (int i = 0; i < 1000; i++) {
+            xVals[i] = 1280 * r.nextDouble();
+            yVals[i] = 1024 * r.nextDouble();
         }
         Voronoi v = new Voronoi(1);
         allEdges = v.generateVoronoi(xVals, yVals, 0, 1280, 0, 1024);
