@@ -1,4 +1,5 @@
 import simplevoronoi.*;
+import pcg.Pcg32;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -21,12 +22,12 @@ public class Test extends JPanel {
     private List<Tile> tiles;
 
     private void makeVoronoi() {
-        double[] xVals = new double[1000];
-        double[] yVals = new double[1000];
-        Random r = new Random();
-        for (int i = 0; i < 1000; i++) {
-            xVals[i] = 1280 * r.nextDouble();
-            yVals[i] = 1024 * r.nextDouble();
+        double[] xVals = new double[100];
+        double[] yVals = new double[xVals.length];
+        Pcg32 r = new Pcg32();
+        for (int i = 0; i < xVals.length; i++) {
+            xVals[i] = r.nextDouble(1280);
+            yVals[i] = r.nextDouble(1024);
         }
         Voronoi v = new Voronoi(0.00001f);
 
