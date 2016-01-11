@@ -26,14 +26,23 @@ authors and should not be interpreted as representing official policies, either 
 or implied, of James Humphreys.
  */
 
+/*
+ * Second constructor added by Michael Earl
+ */
+
 package simplevoronoi;
 
-class Point
+public class Point
 {
     double x, y;
 
     public Point()
     {
+    }
+
+    public Point(double x, double y) 
+    {
+        setPoint(x, y);
     }
 
     public void setPoint(double x, double y)

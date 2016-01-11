@@ -89,7 +89,7 @@ public class Voronoi
     private Halfedge ELhash[];
     private Halfedge ELleftend, ELrightend;
     private List<GraphEdge> allEdges;
-    private Map<Integer, ArrayList<GraphEdge>> tilemap;
+    private Map<Site, ArrayList<GraphEdge>> tilemap;
 
     /*********************************************************
      * Public methods
@@ -103,7 +103,7 @@ public class Voronoi
         allEdges = null;
         this.minDistanceBetweenSites = minDistanceBetweenSites;
 
-        tilemap = new HashMap<Integer, ArrayList<GraphEdge>>();
+        tilemap = new HashMap<Site, ArrayList<GraphEdge>>();
     }
 
     /**
@@ -145,7 +145,7 @@ public class Voronoi
 
         List<Tile> tiles = new ArrayList<Tile>();
 
-        for (Map.Entry<Integer, ArrayList<GraphEdge>> entry : tilemap.entrySet()) {
+        for (Map.Entry<Site, ArrayList<GraphEdge>> entry : tilemap.entrySet()) {
             tiles.add(new Tile(entry.getKey(), entry.getValue().toArray(new GraphEdge[entry.getValue().size()])));
         }
 
@@ -589,15 +589,15 @@ public class Voronoi
         newEdge.site1 = leftSite.sitenbr;
         newEdge.site2 = rightSite.sitenbr;
 
-        if (!tilemap.containsKey(newEdge.site1)) {
-            tilemap.put(newEdge.site1, new ArrayList<GraphEdge>());
+        if (!tilemap.containsKey(leftSite)) {
+            tilemap.put(leftSite, new ArrayList<GraphEdge>());
         }
-        tilemap.get(newEdge.site1).add(newEdge);
+        tilemap.get(leftSite).add(newEdge);
 
-        if (!tilemap.containsKey(newEdge.site2)) {
-            tilemap.put(newEdge.site2, new ArrayList<GraphEdge>());
+        if (!tilemap.containsKey(rightSite)) {
+            tilemap.put(rightSite, new ArrayList<GraphEdge>());
         }
-        tilemap.get(newEdge.site2).add(newEdge);
+        tilemap.get(rightSite).add(newEdge);
     }
 
     private void clip_line(Edge e)

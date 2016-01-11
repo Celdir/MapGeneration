@@ -38,4 +38,16 @@ public class Site
     {
         coord = new Point();
     }
+
+    public Point getCoord() {
+        return coord;
+    }
+
+    public double getX() {
+        return coord.x;
+    }
+
+    public double getY() {
+        return coord.y;
+    }
 }

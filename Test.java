@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -40,6 +41,7 @@ public class Test extends JPanel {
             for (GraphEdge e : t.getEdges()) {
                 g2d.draw(new Line2D.Double(e.x1, e.y1, e.x2, e.y2));
             }
+            g2d.draw(new Ellipse2D.Double(t.getSite().getX(), t.getSite().getY(), 1, 1));
         }
     }
 

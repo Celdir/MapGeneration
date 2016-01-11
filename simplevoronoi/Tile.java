@@ -1,16 +1,20 @@
+/*
+ * 2016 - Written by Michael Earl
+ */
+
 package simplevoronoi;
 
 public class Tile {
-    private int tilenbr; // Tile number, gotten from sitenbr of GraphEdges
+    private Site site;
     private GraphEdge[] edges;
 
-    public Tile(int tilenbr, GraphEdge[] edges) {
-        this.tilenbr = tilenbr;
+    public Tile(Site site, GraphEdge[] edges) {
+        this.site = site;
         this.edges = edges;
     }
 
-    public int number() {
-        return tilenbr;
+    public Site getSite() {
+        return site;
     }
 
     public GraphEdge[] getEdges() {
