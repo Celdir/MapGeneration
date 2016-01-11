@@ -1,7 +1,9 @@
+import simplevoronoi.*;
+
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 import java.lang.Math;
-import simplevoronoi.*;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -15,7 +17,7 @@ import javax.swing.JPanel;
 
 
 public class Test extends JPanel {
-    private List<GraphEdge> allEdges;
+    private List<Tile> tiles;
 
     private void makeVoronoi() {
         double[] xVals = new double[1000];
@@ -25,16 +27,19 @@ public class Test extends JPanel {
             xVals[i] = 1280 * r.nextDouble();
             yVals[i] = 1024 * r.nextDouble();
         }
-        Voronoi v = new Voronoi(1);
-        allEdges = v.generateVoronoi(xVals, yVals, 0, 1280, 0, 1024);
+        Voronoi v = new Voronoi(0.00001f);
+
+        tiles = v.generateVoronoi(xVals, yVals, 0, 1280, 0, 1024);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        for (GraphEdge e : allEdges) {
-            g2d.draw(new Line2D.Double(e.x1, e.y1, e.x2, e.y2));
+        for (Tile t : tiles) {
+            for (GraphEdge e : t.getEdges()) {
+                g2d.draw(new Line2D.Double(e.x1, e.y1, e.x2, e.y2));
+            }
         }
     }
 

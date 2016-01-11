@@ -1,5 +1,3 @@
-package simplevoronoi;
-
 /*
  * The author of this software is Steven Fortune.  Copyright (c) 1994 by AT&T
  * Bell Laboratories.
@@ -42,7 +40,24 @@ package simplevoronoi;
  * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
  */
 
+/*
+ * Tile-related modifications made by Michael Earl
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose without fee is hereby granted, provided that this entire notice
+ * is included in all copies of any software which is or includes a copy
+ * or modification of this software and in all copies of the supporting
+ * documentation for such software.
+ * THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTY.  IN PARTICULAR, NEITHER THE AUTHORS NOR AT&T MAKE ANY
+ * REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY
+ * OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+ *
+ */
 
+package simplevoronoi;
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -74,6 +89,7 @@ public class Voronoi
     private Halfedge ELhash[];
     private Halfedge ELleftend, ELrightend;
     private List<GraphEdge> allEdges;
+    private Map<Integer, ArrayList<GraphEdge>> tilemap;
 
     /*********************************************************
      * Public methods
@@ -86,6 +102,8 @@ public class Voronoi
 
         allEdges = null;
         this.minDistanceBetweenSites = minDistanceBetweenSites;
+
+        tilemap = new HashMap<Integer, ArrayList<GraphEdge>>();
     }
 
     /**
@@ -98,7 +116,7 @@ public class Voronoi
      * @param maxY The maximum Y of the bounding box around the voronoi
      * @return
      */
-    public List<GraphEdge> generateVoronoi(double[] xValuesIn, double[] yValuesIn,
+    public List<Tile> generateVoronoi(double[] xValuesIn, double[] yValuesIn,
             double minX, double maxX, double minY, double maxY)
     {
         sort(xValuesIn, yValuesIn, xValuesIn.length);
@@ -125,7 +143,13 @@ public class Voronoi
         siteidx = 0;
         voronoi_bd();
 
-        return allEdges;
+        List<Tile> tiles = new ArrayList<Tile>();
+
+        for (Map.Entry<Integer, ArrayList<GraphEdge>> entry : tilemap.entrySet()) {
+            tiles.add(new Tile(entry.getKey(), entry.getValue().toArray(new GraphEdge[entry.getValue().size()])));
+        }
+
+        return tiles;
     }
 
 
@@ -564,6 +588,16 @@ public class Voronoi
 
         newEdge.site1 = leftSite.sitenbr;
         newEdge.site2 = rightSite.sitenbr;
+
+        if (!tilemap.containsKey(newEdge.site1)) {
+            tilemap.put(newEdge.site1, new ArrayList<GraphEdge>());
+        }
+        tilemap.get(newEdge.site1).add(newEdge);
+
+        if (!tilemap.containsKey(newEdge.site2)) {
+            tilemap.put(newEdge.site2, new ArrayList<GraphEdge>());
+        }
+        tilemap.get(newEdge.site2).add(newEdge);
     }
 
     private void clip_line(Edge e)
