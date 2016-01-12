@@ -43,6 +43,10 @@ public class Site
         return coord;
     }
 
+    public int getNumber() {
+        return sitenbr;
+    }
+
     public double getX() {
         return coord.x;
     }

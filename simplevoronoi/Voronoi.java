@@ -89,7 +89,7 @@ public class Voronoi
     private Halfedge ELhash[];
     private Halfedge ELleftend, ELrightend;
     private List<GraphEdge> allEdges;
-    private Map<Site, ArrayList<GraphEdge>> tilemap;
+    private Map<Integer, Tile> tilemap;
 
     /*********************************************************
      * Public methods
@@ -103,7 +103,7 @@ public class Voronoi
         allEdges = null;
         this.minDistanceBetweenSites = minDistanceBetweenSites;
 
-        tilemap = new HashMap<Site, ArrayList<GraphEdge>>();
+        tilemap = new HashMap<Integer, Tile>();
     }
 
     /**
@@ -145,8 +145,8 @@ public class Voronoi
 
         List<Tile> tiles = new ArrayList<Tile>();
 
-        for (Map.Entry<Site, ArrayList<GraphEdge>> entry : tilemap.entrySet()) {
-            tiles.add(new Tile(entry.getKey(), entry.getValue().toArray(new GraphEdge[entry.getValue().size()])));
+        for (Map.Entry<Integer, Tile> entry : tilemap.entrySet()) {
+            tiles.add(entry.getValue());
         }
 
         return tiles;
@@ -589,15 +589,18 @@ public class Voronoi
         newEdge.site1 = leftSite.sitenbr;
         newEdge.site2 = rightSite.sitenbr;
 
-        if (!tilemap.containsKey(leftSite)) {
-            tilemap.put(leftSite, new ArrayList<GraphEdge>());
+        if (!tilemap.containsKey(leftSite.sitenbr)) {
+            tilemap.put(leftSite.sitenbr, new Tile(leftSite));
         }
-        tilemap.get(leftSite).add(newEdge);
+        tilemap.get(leftSite.sitenbr).getEdges().add(newEdge);
 
-        if (!tilemap.containsKey(rightSite)) {
-            tilemap.put(rightSite, new ArrayList<GraphEdge>());
+        if (!tilemap.containsKey(rightSite.sitenbr)) {
+            tilemap.put(rightSite.sitenbr, new Tile(rightSite));
         }
-        tilemap.get(rightSite).add(newEdge);
+        tilemap.get(rightSite.sitenbr).getEdges().add(newEdge);
+
+        tilemap.get(leftSite.sitenbr).getAdjacentTiles().add(tilemap.get(rightSite.sitenbr));
+        tilemap.get(rightSite.sitenbr).getAdjacentTiles().add(tilemap.get(leftSite.sitenbr));
     }
 
     private void clip_line(Edge e)
