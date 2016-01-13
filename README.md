@@ -1,2 +1,4 @@
 # RPGMap
-Repository to store test code for Voronoi tile map generation
+Voronoi tile-based map generation for tabletop RPGs.
+
+~Work in progress.~
