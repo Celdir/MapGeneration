@@ -22,7 +22,7 @@ public class Main extends Application {
     }
 
     private Group drawMap() {
-        resetMap(1000, 1920, 1080);
+        resetMap(1000, 1280, 1024);
 
         Group root = new Group();
 
@@ -57,7 +57,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         final Group root = new Group();
         root.getChildren().add(drawMap());
-        Scene scene = new Scene(root, 1920, 1080);
+        Scene scene = new Scene(root, 1280, 1024);
 
 	scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
