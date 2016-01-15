@@ -33,7 +33,17 @@ public class Main extends Application {
                 Line line = new Line(e.x1, e.y1, e.x2, e.y2);
                 tiles.getChildren().add(line);
             }
-            Circle c = new Circle(t.getSite().getX(), t.getSite().getY(), 2, Color.BLACK);
+
+            Color color = Color.BLACK;
+            switch (t.getBiome()) {
+                case PLAINS: color = Color.LAWNGREEN; break;
+                case MOUNTAIN: color = Color.DARKGREY; break;
+                case HILL: color = Color.GREY; break;
+                case FOREST: color = Color.GREEN; break;
+                case DESERT: color = Color.GOLD; break;
+                case TUNDRA: color = Color.GHOSTWHITE; break;
+            }
+            Circle c = new Circle(t.getSite().getX(), t.getSite().getY(), 2, color);
             points.getChildren().add(c);
         }
 
