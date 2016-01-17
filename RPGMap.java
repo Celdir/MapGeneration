@@ -38,11 +38,11 @@ public class RPGMap {
                 double xSum = 0;
                 double ySum = 0;
                 for (GraphEdge e : tiles.get(j).getEdges()) {
-                    xSum += e.x1; // only use x1 and y1 so we don't double count the points
-                    ySum += e.y1;
+                    xSum += e.x1 + e.x2;
+                    ySum += e.y1 + e.y2;
                 }
-                xVals[j] = xSum / tiles.get(j).getEdges().size();
-                yVals[j] = ySum / tiles.get(j).getEdges().size();
+                xVals[j] = xSum / (2 * tiles.get(j).getEdges().size());
+                yVals[j] = ySum / (2 * tiles.get(j).getEdges().size());
             }
             Voronoi v = new Voronoi(0.00001f);
 
