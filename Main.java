@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
+//import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -33,7 +34,7 @@ public class Main extends Application {
                 Line line = new Line(e.x1, e.y1, e.x2, e.y2);
                 tiles.getChildren().add(line);
             }
-
+            
             Color color = Color.BLACK;
             switch (t.getBiome()) {
                 case PLAINS: color = Color.LAWNGREEN; break;

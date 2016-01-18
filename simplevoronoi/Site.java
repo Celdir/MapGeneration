@@ -54,4 +54,8 @@ public class Site
     public double getY() {
         return coord.y;
     }
+
+    public void setNumber(int n) {
+        sitenbr = n;
+    }
 }
