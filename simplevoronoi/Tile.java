@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Tile {
     public enum Biome {
-        PLAINS, MOUNTAIN, HILL, FOREST, DESERT, TUNDRA, OCEAN;
+        TUNDRA, PLAINS, HILL, MOUNTAIN, FOREST, DESERT, LAKE, UNASSIGNED;
     }
 
     private Site site;
@@ -21,7 +21,7 @@ public class Tile {
         this.site = site;
         this.edges = new ArrayList<GraphEdge>();
         this.adjacentTiles = new ArrayList<Tile>();
-        this.biome = Biome.PLAINS;
+        this.biome = Biome.UNASSIGNED;
     }
 
     public Site getSite() {

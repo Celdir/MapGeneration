@@ -37,14 +37,15 @@ public class Main extends Application {
             
             Color color = Color.BLACK;
             switch (t.getBiome()) {
+                case TUNDRA: color = Color.GHOSTWHITE; break;
                 case PLAINS: color = Color.LAWNGREEN; break;
-                case MOUNTAIN: color = Color.DARKGREY; break;
                 case HILL: color = Color.GREY; break;
+                case MOUNTAIN: color = Color.DARKGREY; break;
                 case FOREST: color = Color.GREEN; break;
                 case DESERT: color = Color.GOLD; break;
-                case TUNDRA: color = Color.GHOSTWHITE; break;
+                case LAKE: color = Color.BLUE; break;
             }
-            Circle c = new Circle(t.getSite().getX(), t.getSite().getY(), 2, color);
+            Circle c = new Circle(t.getSite().getX(), t.getSite().getY(), 4, color);
             points.getChildren().add(c);
         }
 
