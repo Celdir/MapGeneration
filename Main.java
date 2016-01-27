@@ -26,18 +26,12 @@ public class Main extends Application {
     }
 
     private Group drawMap() {
-        resetMap(1000, 1280, 1024);
+        resetMap(5000, 1280, 1024);
 
         Group root = new Group();
 
         Group tiles = new Group();
-        Group lines = new Group();
         for (Tile t : map.tiles) {
-            for (GraphEdge e : t.getEdges()) {
-                Line line = new Line(e.x1, e.y1, e.x2, e.y2);
-                lines.getChildren().add(line);
-            }
-
             Double[] pointsArray = new Double[2*t.getPoints().size()];
             for (int i = 0; i < t.getPoints().size(); i++) {
                 pointsArray[2*i] = t.getPoints().get(i).getX();
@@ -62,7 +56,6 @@ public class Main extends Application {
             tiles.getChildren().add(polygon);
         }
 
-        root.getChildren().add(lines);
         root.getChildren().add(tiles);
 
         return root;
