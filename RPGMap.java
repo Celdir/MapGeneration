@@ -19,6 +19,10 @@ public class RPGMap {
         this.height = height;
         generateTiles(numTiles);
         smoothPointDistribution(2);
+        // Correctly order points
+        for (Tile t : tiles) {
+            t.organizePoints();
+        }
         sortTiles();
         assignBiomes();
     }

@@ -3,6 +3,7 @@ import simplevoronoi.GraphEdge;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.Double;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -11,9 +12,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.Group;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.paint.Color;
 //import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.geometry.Point2D;
 
 public class Main extends Application {
     private RPGMap map;
@@ -28,12 +31,20 @@ public class Main extends Application {
         Group root = new Group();
 
         Group tiles = new Group();
-        Group points = new Group();
+        Group lines = new Group();
         for (Tile t : map.tiles) {
             for (GraphEdge e : t.getEdges()) {
                 Line line = new Line(e.x1, e.y1, e.x2, e.y2);
-                tiles.getChildren().add(line);
+                lines.getChildren().add(line);
             }
+
+            Double[] pointsArray = new Double[2*t.getPoints().size()];
+            for (int i = 0; i < t.getPoints().size(); i++) {
+                pointsArray[2*i] = t.getPoints().get(i).getX();
+                pointsArray[2*i+1] = t.getPoints().get(i).getY();
+            }
+            Polygon polygon = new Polygon();
+            polygon.getPoints().addAll(pointsArray);
             
             Color color = Color.BLACK;
             switch (t.getBiome()) {
@@ -45,12 +56,14 @@ public class Main extends Application {
                 case DESERT: color = Color.GOLD; break;
                 case LAKE: color = Color.BLUE; break;
             }
-            Circle c = new Circle(t.getSite().getX(), t.getSite().getY(), 4, color);
-            points.getChildren().add(c);
+
+            polygon.setFill(color);
+
+            tiles.getChildren().add(polygon);
         }
 
+        root.getChildren().add(lines);
         root.getChildren().add(tiles);
-        root.getChildren().add(points);
 
         return root;
     }
