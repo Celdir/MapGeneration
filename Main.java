@@ -16,7 +16,6 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.paint.Color;
 //import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.geometry.Point2D;
 
 public class Main extends Application {
     private RPGMap map;
@@ -26,7 +25,7 @@ public class Main extends Application {
     }
 
     private Group drawMap() {
-        resetMap(5000, 1280, 1024);
+        resetMap(500, 1280, 1024);
 
         Group root = new Group();
 

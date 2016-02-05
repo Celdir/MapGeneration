@@ -7,7 +7,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Arrays;
 import java.lang.Math;
+import javafx.geometry.Point2D;
 
 public class RPGMap {
     private double width;
@@ -18,11 +20,7 @@ public class RPGMap {
         this.width = width;
         this.height = height;
         generateTiles(numTiles);
-        smoothPointDistribution(2);
-        // Correctly order points
-        for (Tile t : tiles) {
-            t.organizePoints();
-        }
+        smoothPointDistribution(15);
         sortTiles();
         assignBiomes();
     }
@@ -38,26 +36,65 @@ public class RPGMap {
         Voronoi v = new Voronoi(0.00001f);
 
         tiles = v.generateVoronoi(xVals, yVals, 0, width, 0, height);
+        orderPoints();
+    }
+
+    private void orderPoints() {
+        // Correctly order points
+        for (Tile t : tiles) {
+            t.organizePoints(width, height);
+        }
     }
 
     private void smoothPointDistribution(int smoothness) {
         for (int i = 0; i < smoothness; i++) {
-            double[] xVals = new double[tiles.size()];
-            double[] yVals = new double[tiles.size()];
+
+            List<Double> xVals = new ArrayList<Double>();
+            List<Double> yVals = new ArrayList<Double>();
             
             for (int j = 0; j < tiles.size(); j++) {
-                double xSum = 0;
-                double ySum = 0;
-                for (GraphEdge e : tiles.get(j).getEdges()) {
-                    xSum += e.x1 + e.x2;
-                    ySum += e.y1 + e.y2;
+                double area = 0;
+                double cx = 0;
+                double cy = 0;
+
+                List<Point2D> points = tiles.get(j).getPoints();
+                for (int k = 0; k < points.size()-1; k++) {
+                    Point2D p1 = points.get(k);
+                    Point2D p2 = points.get(k+1);
+                    area += (p1.getX() * p2.getY() - p2.getX() * p1.getY());
+                    cx += (p1.getX() + p2.getX()) * (p1.getX() * p2.getY() - p2.getX() * p1.getY());
+                    cy += (p1.getY() + p2.getY()) * (p1.getX() * p2.getY() - p2.getX() * p1.getY());
                 }
-                xVals[j] = xSum / (2 * tiles.get(j).getEdges().size());
-                yVals[j] = ySum / (2 * tiles.get(j).getEdges().size());
+                Point2D p1 = points.get(points.size()-1);
+                Point2D p2 = points.get(0);
+                area += (p1.getX() * p2.getY() - p2.getX() * p1.getY());
+                cx += (p1.getX() + p2.getX()) * (p1.getX() * p2.getY() - p2.getX() * p1.getY());
+                cy += (p1.getY() + p2.getY()) * (p1.getX() * p2.getY() - p2.getX() * p1.getY());
+
+                area /= 2;
+                cx /= 6*area;
+                cy /= 6*area;
+                
+                if (area != 0) {
+                    xVals.add(cx);
+                    yVals.add(cy);
+                }
             }
+
+            double[] xValsArray = new double[xVals.size()];
+            for (int j = 0; j < xVals.size(); j++) {
+                xValsArray[j] = xVals.get(j);
+            }
+            double[] yValsArray = new double[yVals.size()];
+            for (int j = 0; j < xVals.size(); j++) {
+                yValsArray[j] = yVals.get(j);
+            }
+
             Voronoi v = new Voronoi(0.00001f);
 
-            tiles = v.generateVoronoi(xVals, yVals, 0, width, 0, height);
+            tiles = v.generateVoronoi(xValsArray,  yValsArray, 0, width, 0, height);
+
+            orderPoints();
         }
     }
 
@@ -177,7 +214,7 @@ public class RPGMap {
 
         while (tileCount < tiles.size()) {
             // tundra
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 Tile t = tiles.get(0);
                 Iterator it = adjacentToTundra.iterator();
                 int index = r.nextInt(adjacentToTundra.size());
@@ -195,7 +232,7 @@ public class RPGMap {
             }
             
             // plains
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 Tile t = tiles.get(0);
                 Iterator it = adjacentToPlains.iterator();
                 int index = r.nextInt(adjacentToPlains.size());
@@ -249,7 +286,7 @@ public class RPGMap {
             }
 
             // forest
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
                 Tile t = tiles.get(0);
                 Iterator it = adjacentToForest.iterator();
                 int index = r.nextInt(adjacentToForest.size());
@@ -267,7 +304,7 @@ public class RPGMap {
             }
 
             // desert
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 Tile t = tiles.get(0);
                 Iterator it = adjacentToDesert.iterator();
                 int index = r.nextInt(adjacentToDesert.size());
